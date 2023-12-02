@@ -1,6 +1,7 @@
 import scala.annotation.tailrec
 import scala.io.Source
 import scala.util.matching.Regex
+import cats.implicits._
 
 object Day1 extends App {
   private def part1(input: Iterator[String]): Int = input.map(_.toList.filter(_.isDigit))
@@ -36,7 +37,36 @@ object Day1 extends App {
     part1(input.map(a => replaceDigits(a)))
   }
 
+  private def part2Alt(input: Iterator[String]): Int = {
+    val digits: Map[String, String] = Map(
+      "one" -> "1",
+      "two" -> "2",
+      "three" -> "3",
+      "four" -> "4",
+      "five" -> "5",
+      "six" -> "6",
+      "seven" -> "7",
+      "eight" -> "8",
+      "nine" -> "9",
+    )
+
+    val regex = s"${(1 to 9).mkString("|")}|${digits.keys.mkString("|")}"
+
+    def findDigits(str: String): String = {
+      val left = regex.r.findFirstIn(str).map(c => digits.getOrElse(c, c)).getOrElse("")
+      val right = regex.reverse.r.findFirstIn(str.reverse).map(c => digits.getOrElse(c.reverse, c)).getOrElse("")
+      s"$left$right"
+    }
+
+    input
+      .map(findDigits)
+      .map(_.toIntOption)
+      .fold(0.some)((a, c) => a |+| c)
+      .getOrElse(0)
+  }
+
   val input = Source.fromFile("inputs/day1/input.txt").mkString
   println(part1(input.linesIterator))
   println(part2(input.linesIterator))
+  println(part2Alt(input.linesIterator))
 }
