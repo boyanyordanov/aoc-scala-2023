@@ -18,29 +18,27 @@ object Day2 extends App {
     val drawnCubes = gameData.last
       .split(";")
       .map(_.trim.stripMargin)
-      .map(_.trim.split(", ")).flatMap(_.map(_.split(" ")).map(cubes =>
-        DrawnCubes(cubes.last, cubes.head.toInt)
-      )).toList
+      .map(_.trim.split(", "))
+      .flatMap(
+        _.map(_.split(" ")).map(cubes =>
+          DrawnCubes(cubes.last, cubes.head.toInt)
+        )
+      )
+      .toList
 
     Game(id, drawnCubes)
   }
 
   private def isGamePossible(game: Game): Boolean = {
     val maxCubes = Map("red" -> 12, "green" -> 13, "blue" -> 14)
-    game.drawings.find(a => a.count > maxCubes.getOrElse(a.color, 0)) match {
-      case Some(_) => false
-      case None    => true
-    }
+    game.drawings.exists(draw => draw.count > maxCubes.getOrElse(draw.color, 0))
   }
-  private def part1Solution(input: Iterator[String]): Int = {
-    val games = input.map(parseLine)
-    val possibleGames = games.filter(isGamePossible).map(_.id).sum
-    possibleGames
-  }
+  private def part1Solution(input: Iterator[String]): Int =
+    input.map(parseLine).filter(isGamePossible).map(_.id).sum
 
-  private def part2Solution(input: Iterator[String]): Int = {
-    val games = input.map(parseLine)
-    games
+  private def part2Solution(input: Iterator[String]): Int =
+    input
+      .map(parseLine)
       .map(game => {
         val maxBlue = game.drawings.filter(_.color == "blue").map(_.count).max
         val maxRed = game.drawings.filter(_.color == "red").map(_.count).max
@@ -49,5 +47,4 @@ object Day2 extends App {
         maxBlue * maxRed * maxGreen
       })
       .sum
-  }
 }
