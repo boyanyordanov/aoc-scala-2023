@@ -31,7 +31,7 @@ object Day2 extends App {
 
   private def isGamePossible(game: Game): Boolean = {
     val maxCubes = Map("red" -> 12, "green" -> 13, "blue" -> 14)
-    game.drawings.exists(draw => draw.count > maxCubes.getOrElse(draw.color, 0))
+    !game.drawings.exists(draw => draw.count > maxCubes.getOrElse(draw.color, 0))
   }
   private def part1Solution(input: Iterator[String]): Int =
     input.map(parseLine).filter(isGamePossible).map(_.id).sum
