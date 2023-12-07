@@ -1,10 +1,10 @@
+import util.PuzzleInput.readInputFor
+
 import scala.annotation.tailrec
 import scala.io.Source
 
 object Day4 extends App {
-  val inputSource = Source.fromFile("inputs/day4/input.txt")
-  val input = inputSource.getLines().toList
-  inputSource.close()
+  val input = readInputFor("day4")
   val part1 = part1Solution(input)
   val part2 = part2Solution(input)
 
