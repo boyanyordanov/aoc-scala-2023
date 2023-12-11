@@ -1,3 +1,5 @@
+package day6
+
 import util.PuzzleInput.readInputFor
 
 @main def day6(): Unit =

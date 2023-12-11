@@ -4,14 +4,15 @@ import scala.io.Source
 
 object PuzzleInput {
   def readInputFor(day: String): List[String] = {
-    val inputSource = Source.fromFile(s"inputs/$day/input.txt")
-    val input = inputSource.getLines().toList
-    inputSource.close()
-    input
+    readInputFile(day, "input")
   }
 
   def readTestInputFor(day: String): List[String] = {
-    val inputSource = Source.fromFile(s"inputs/$day/test.txt")
+    readInputFile(day, "test")
+  }
+
+  def readInputFile(day: String, file: String): List[String] = {
+    val inputSource = Source.fromFile(s"inputs/$day/$file.txt")
     val input = inputSource.getLines().toList
     inputSource.close()
     input
